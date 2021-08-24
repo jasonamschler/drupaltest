@@ -1,0 +1,12 @@
+diff --git a/src/Plugin/OpenIDConnectClient/WindowsAad.php b/src/Plugin/OpenIDConnectClient/WindowsAad.php
+index a84ef30..2f7f9b8 100644
+--- a/src/Plugin/OpenIDConnectClient/WindowsAad.php
++++ b/src/Plugin/OpenIDConnectClient/WindowsAad.php
+@@ -176,6 +176,7 @@ class WindowsAad extends OpenIDConnectClientBase {
+       [
+         'absolute' => TRUE,
+         'language' => $language_none,
++        'https' => TRUE,
+       ]
+     )->toString();
+     $endpoints = $this->getEndpoints();
