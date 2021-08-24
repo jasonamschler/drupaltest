@@ -1,0 +1,40 @@
+diff --git a/src/Plugin/OpenIDConnectClient/WindowsAad.php b/src/Plugin/OpenIDConnectClient/WindowsAad.php
+index a84ef30..4ecde7e 100644
+--- a/src/Plugin/OpenIDConnectClient/WindowsAad.php
++++ b/src/Plugin/OpenIDConnectClient/WindowsAad.php
+@@ -165,6 +165,8 @@ class WindowsAad extends OpenIDConnectClientBase {
+    *   A result array or false.
+    */
+   public function retrieveTokens($authorization_code) {
++    \Drupal::logger('add-troubleshoot')->error('in retrieveTokens');
++
+     // Exchange `code` for access token and ID token.
+     $language_none = \Drupal::languageManager()
+       ->getLanguage(LanguageInterface::LANGCODE_NOT_APPLICABLE);
+@@ -176,10 +178,17 @@ class WindowsAad extends OpenIDConnectClientBase {
+       [
+         'absolute' => TRUE,
+         'language' => $language_none,
++        'https' => TRUE,
+       ]
+     )->toString();
+     $endpoints = $this->getEndpoints();
+ 
++    \Drupal::logger('add-troubleshoot')->error('<pre>before replace: <code>' . print_r($redirect_uri, TRUE) . '</code></pre>');
++
++    $redirect_uri = str_replace('http://',"https://",$redirect_uri);
++
++    \Drupal::logger('add-troubleshoot')->error('<pre>after replace: <code>' . print_r($redirect_uri, TRUE) . '</code></pre>');
++
+     $request_options = [
+       'form_params' => [
+         'code' => $authorization_code,
+@@ -190,6 +199,8 @@ class WindowsAad extends OpenIDConnectClientBase {
+       ],
+     ];
+ 
++    \Drupal::logger('add-troubleshoot')->error('<pre>request_options: <code>' . print_r($request_options, TRUE) . '</code></pre>');
++
+     // Add a Graph API as resource if an option is selected.
+     switch ($this->configuration['userinfo_graph_api_wa']) {
+       case 1:
